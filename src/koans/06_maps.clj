@@ -1,4 +1,4 @@
-(ns koans.05-maps
+(ns koans.06-maps
   (:require [koan-engine.core :refer :all]))
 
 (meditations
@@ -41,6 +41,12 @@
   "You can also create a new version with an entry removed"
   (= { 1 "January"} (dissoc {1 "January" 2 "February"} 2))
 
+  "Create a new map by merging"
+  (= {:a 1 :b 2 __ __} (merge {:a 1 :b 2} {:c 3}))
+
+  "Specify how to handle entries with same keys when merging"
+  (= {:a 1 :b __ :c 3} (merge-with + {:a 1 :b 1} {:b 1 :c 3}))
+
   "Often you will need to get the keys, but the order is undependable"
   (= (list 2010 2014 2018)
      (sort (keys { 2014 "Sochi" 2018 "PyeongChang" 2010 "Vancouver"})))
@@ -48,3 +54,10 @@
   "You can get the values in a similar way"
   (= (list "PyeongChang" "Sochi" "Vancouver")
      (sort (vals {2010 "Vancouver" 2014 "Sochi" 2018 "PyeongChang"}))))
+
+  "You can even iterate over the map entries as a seq"
+  (= {:a __ :b __}
+     (into {}
+           (map
+            (fn [[k v]] [k (inc v)])
+            {:a 1 :b 2})))
